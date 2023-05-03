@@ -15,27 +15,35 @@ import (
 	"strconv"
 )
 
-var student st.StudentUsecase
+type StudentHandler struct {
+	student st.StudentUsecase
+}
 
-func StudentRoutes(r *mux.Router, db *sql.DB) {
+func NewStudentHandler(db *sql.DB) *StudentHandler {
 	studentRepo := repository.NewStudentRepository(db)
-	student = st.NewStudent(studentRepo)
+	student := st.NewStudent(studentRepo)
+	return &StudentHandler{
+		student: student,
+	}
+}
 
-	r.HandleFunc("/", getAllStudents).Methods("GET")
-	r.HandleFunc("/getStudent/{id}", getStudent).Methods("GET")
-	r.HandleFunc("/", createStudent).Methods("POST")
-	r.HandleFunc("/", updateStudent).Methods("PUT")
-	r.HandleFunc("/{id}", deleteStudent).Methods("DELETE")
-	r.HandleFunc("/search", searchStudents).Methods("GET")
+func (handler *StudentHandler) StudentRoutes(r *mux.Router) {
+
+	r.HandleFunc("/", handler.getAllStudents).Methods("GET")
+	r.HandleFunc("/getStudent/{id}", handler.getStudent).Methods("GET")
+	r.HandleFunc("/", handler.createStudent).Methods("POST")
+	r.HandleFunc("/", handler.updateStudent).Methods("PUT")
+	r.HandleFunc("/{id}", handler.deleteStudent).Methods("DELETE")
+	r.HandleFunc("/search", handler.searchStudents).Methods("GET")
 
 }
 
-func getAllStudents(w http.ResponseWriter, r *http.Request) {
+func (handler *StudentHandler) getAllStudents(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentListResponse
 
 	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
-	students, err := student.GetAllStudents()
+	students, err := handler.student.GetAllStudents()
 	if err != nil {
 		log.Error(consts.GetStudentsError, err)
 
@@ -71,7 +79,7 @@ func getAllStudents(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getStudent(w http.ResponseWriter, r *http.Request) {
+func (handler *StudentHandler) getStudent(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentResponse
 	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
@@ -95,7 +103,7 @@ func getStudent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	student, err := student.GetStudent(id)
+	student, err := handler.student.GetStudent(id)
 	if err != nil {
 		log.Error(consts.GetStudentsError, err)
 
@@ -131,7 +139,7 @@ func getStudent(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func createStudent(w http.ResponseWriter, r *http.Request) {
+func (handler *StudentHandler) createStudent(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentResponse
 	var newStudent models.Student
 
@@ -168,7 +176,7 @@ func createStudent(w http.ResponseWriter, r *http.Request) {
 		log.Error(consts.JSONMarshalError, err)
 	}
 
-	student1, err := student.CreateStudent(&newStudent)
+	student1, err := handler.student.CreateStudent(&newStudent)
 	if err != nil {
 		log.Error(consts.GetStudentsError, err)
 
@@ -204,7 +212,7 @@ func createStudent(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func updateStudent(w http.ResponseWriter, r *http.Request) {
+func (handler *StudentHandler) updateStudent(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentResponse
 	var updatedStudent models.Student
 
@@ -241,7 +249,7 @@ func updateStudent(w http.ResponseWriter, r *http.Request) {
 		log.Error(consts.JSONMarshalError, err)
 	}
 
-	student1, err := student.UpdateStudent(&updatedStudent)
+	student1, err := handler.student.UpdateStudent(&updatedStudent)
 	if err != nil {
 		log.Error(consts.GetStudentsError, err)
 
@@ -277,7 +285,7 @@ func updateStudent(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func deleteStudent(w http.ResponseWriter, r *http.Request) {
+func (handler *StudentHandler) deleteStudent(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentResponse
 	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
@@ -301,7 +309,7 @@ func deleteStudent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	student, err := student.DeleteStudent(id)
+	student, err := handler.student.DeleteStudent(id)
 	if err != nil {
 		log.Error(consts.GetStudentsError, err)
 
@@ -337,7 +345,7 @@ func deleteStudent(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func searchStudents(w http.ResponseWriter, r *http.Request) {
+func (handler *StudentHandler) searchStudents(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentSearchResponse
 	var reqBody models.StudentSearchRequest
 
@@ -374,7 +382,8 @@ func searchStudents(w http.ResponseWriter, r *http.Request) {
 		log.Error(consts.JSONMarshalError, err)
 	}
 
-	students, err := student.SearchStudent(reqBody.SearchString, reqBody.Pagination, reqBody.SortBy)
+	students, err := handler.student.SearchStudent(reqBody.SearchString, reqBody.Pagination,
+		reqBody.SortBy)
 	if err != nil {
 		log.Error(consts.GetStudentsError, err)
 

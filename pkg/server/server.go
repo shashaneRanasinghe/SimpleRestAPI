@@ -31,8 +31,9 @@ func Serve() chan string {
 	db.InitDatabase()
 	conn := db.GetConnection()
 
+	st := student.NewStudentHandler(conn)
 	studentRouter := router.PathPrefix("/student").Subrouter()
-	student.StudentRoutes(studentRouter, conn)
+	st.StudentRoutes(studentRouter)
 
 	lecturerRouter := router.PathPrefix("/lecturer").Subrouter()
 	lecturer.LecturerRoutes(lecturerRouter, conn)
