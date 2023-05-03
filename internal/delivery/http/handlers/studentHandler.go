@@ -33,7 +33,7 @@ func StudentRoutes(r *mux.Router, db *sql.DB) {
 func getAllStudents(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentListResponse
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
 	students, err := student.GetAllStudents()
 	if err != nil {
@@ -73,7 +73,7 @@ func getAllStudents(w http.ResponseWriter, r *http.Request) {
 
 func getStudent(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentResponse
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
@@ -135,7 +135,7 @@ func createStudent(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentResponse
 	var newStudent models.Student
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -208,7 +208,7 @@ func updateStudent(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentResponse
 	var updatedStudent models.Student
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -279,7 +279,7 @@ func updateStudent(w http.ResponseWriter, r *http.Request) {
 
 func deleteStudent(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentResponse
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
@@ -341,7 +341,7 @@ func searchStudents(w http.ResponseWriter, r *http.Request) {
 	var respModel models.StudentSearchResponse
 	var reqBody models.StudentSearchRequest
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
