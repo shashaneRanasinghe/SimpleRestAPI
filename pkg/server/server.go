@@ -2,7 +2,9 @@ package server
 
 import (
 	"context"
-	"github.com/shashaneRanasinghe/simpleAPI/internal/delivery/http/handlers"
+	"github.com/shashaneRanasinghe/simpleAPI/internal/delivery/http/handlers/lecturer"
+	"github.com/shashaneRanasinghe/simpleAPI/internal/delivery/http/handlers/staff"
+	"github.com/shashaneRanasinghe/simpleAPI/internal/delivery/http/handlers/student"
 	"github.com/shashaneRanasinghe/simpleAPI/pkg/database"
 	"net/http"
 	"os"
@@ -30,13 +32,13 @@ func Serve() chan string {
 	conn := db.GetConnection()
 
 	studentRouter := router.PathPrefix("/student").Subrouter()
-	handlers.StudentRoutes(studentRouter, conn)
+	student.StudentRoutes(studentRouter, conn)
 
 	lecturerRouter := router.PathPrefix("/lecturer").Subrouter()
-	handlers.LecturerRoutes(lecturerRouter, conn)
+	lecturer.LecturerRoutes(lecturerRouter, conn)
 
 	staffRouter := router.PathPrefix("/staff").Subrouter()
-	handlers.StaffRoutes(staffRouter, conn)
+	staff.StaffRoutes(staffRouter, conn)
 
 	closeChannel := make(chan string)
 

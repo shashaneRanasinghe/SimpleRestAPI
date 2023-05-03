@@ -1,4 +1,4 @@
-package handlers
+package staff
 
 import (
 	"database/sql"

@@ -1,4 +1,4 @@
-package handlers
+package student
 
 import (
 	"database/sql"
