@@ -2,7 +2,7 @@ package student
 
 import "github.com/shashaneRanasinghe/simpleAPI/internal/models"
 
-type StudentInterface interface {
+type StudentUsecase interface {
 	GetAllStudents() ([]models.Student, error)
 	GetStudent(id int) (*models.Student, error)
 	CreateStudent(student *models.Student) (*models.Student, error)

@@ -15,7 +15,7 @@ import (
 	"strconv"
 )
 
-var student st.StudentInterface
+var student st.StudentUsecase
 
 func StudentRoutes(r *mux.Router, db *sql.DB) {
 	studentRepo := repository.NewStudentRepository(db)

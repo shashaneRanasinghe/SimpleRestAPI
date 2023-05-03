@@ -8,10 +8,10 @@ import (
 )
 
 type studentUsecase struct {
-	studentRepo repository.StudentRepositoryInterface
+	studentRepo repository.StudentRepository
 }
 
-func NewStudent(studentRepo repository.StudentRepositoryInterface) StudentInterface {
+func NewStudent(studentRepo repository.StudentRepository) StudentUsecase {
 	return &studentUsecase{
 		studentRepo: studentRepo,
 	}
@@ -20,7 +20,7 @@ func NewStudent(studentRepo repository.StudentRepositoryInterface) StudentInterf
 func (s studentUsecase) GetAllStudents() ([]models.Student, error) {
 	studentList, err := s.studentRepo.GetAllStudents()
 	if err != nil {
-		log.Debug("Error getting Students ", err)
+		log.Debug(consts.GetStudentsError, err)
 		return nil, err
 	}
 	return studentList, nil
@@ -29,7 +29,7 @@ func (s studentUsecase) GetAllStudents() ([]models.Student, error) {
 func (s studentUsecase) GetStudent(id int) (*models.Student, error) {
 	student, err := s.studentRepo.GetStudent(id)
 	if err != nil {
-		log.Debug("Error getting Students ", err)
+		log.Debug(consts.GetStudentsError, err)
 		return &models.Student{}, err
 	}
 	return student, nil
@@ -58,7 +58,7 @@ func (s studentUsecase) SearchStudent(searchString string, pagination models.Pag
 	sortBy models.SortBy) (*models.StudentSearchData, error) {
 	studentList, err := s.studentRepo.SearchStudent(searchString, pagination, sortBy)
 	if err != nil {
-		log.Debug("Error getting Students ", err)
+		log.Debug(consts.GetStudentsError, err)
 		return nil, err
 	}
 	return studentList, nil

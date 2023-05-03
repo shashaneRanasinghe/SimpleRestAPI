@@ -9,7 +9,7 @@ import (
 	"github.com/tryfix/log"
 )
 
-type StudentRepositoryInterface interface {
+type StudentRepository interface {
 	GetAllStudents() ([]models.Student, error)
 	GetStudent(id int) (*models.Student, error)
 	CreateStudent(student *models.Student) (*models.Student, error)
@@ -31,19 +31,19 @@ func NewStudentRepository(db *sql.DB) *studentRepository {
 
 func (s *studentRepository) GetAllStudents() ([]models.Student, error) {
 
-	stmnt, err := s.db.Prepare("SELECT * FROM students")
+	stmt, err := s.db.Prepare("SELECT * FROM students")
 	if err != nil {
 		log.Error(consts.QueryPrepareError, err)
 		return nil, err
 	}
-	defer func(stmnt *sql.Stmt) {
-		err := stmnt.Close()
+	defer func(stmt *sql.Stmt) {
+		err := stmt.Close()
 		if err != nil {
 			log.Error(consts.DBStatementCloseError, err)
 		}
-	}(stmnt)
+	}(stmt)
 
-	rows, err := stmnt.Query()
+	rows, err := stmt.Query()
 	if err != nil {
 		log.Error(consts.DBResultsError, err)
 		return nil, err
@@ -83,19 +83,19 @@ func (s *studentRepository) GetAllStudents() ([]models.Student, error) {
 func (s *studentRepository) GetStudent(id int) (*models.Student, error) {
 	var student models.Student
 
-	stmnt, err := s.db.Prepare("SELECT * FROM students WHERE id = ?;")
+	stmt, err := s.db.Prepare("SELECT * FROM students WHERE id = ?;")
 	if err != nil {
 		log.Error(consts.QueryPrepareError, err)
 		return &student, err
 	}
-	defer func(stmnt *sql.Stmt) {
-		err := stmnt.Close()
+	defer func(stmt *sql.Stmt) {
+		err := stmt.Close()
 		if err != nil {
 			log.Error(consts.DBStatementCloseError, err)
 		}
-	}(stmnt)
+	}(stmt)
 
-	err = stmnt.QueryRow(id).Scan(&student.ID, &student.FirstName, &student.LastName, &student.Year)
+	err = stmt.QueryRow(id).Scan(&student.ID, &student.FirstName, &student.LastName, &student.Year)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return &models.Student{}, errors.New(consts.StudentNotFound)
@@ -111,20 +111,20 @@ func (s *studentRepository) GetStudent(id int) (*models.Student, error) {
 func (s *studentRepository) CreateStudent(student *models.Student) (*models.Student, error) {
 	var st models.Student
 
-	stmnt, err := s.db.Prepare("INSERT INTO students (firstname,lastname,year)" +
+	stmt, err := s.db.Prepare("INSERT INTO students (firstname,lastname,year)" +
 		" VALUES (?,?,?);")
 	if err != nil {
 		log.Error(consts.QueryPrepareError, err)
 		return &st, err
 	}
-	defer func(stmnt *sql.Stmt) {
-		err := stmnt.Close()
+	defer func(stmt *sql.Stmt) {
+		err := stmt.Close()
 		if err != nil {
 			log.Error(consts.DBStatementCloseError, err)
 		}
-	}(stmnt)
+	}(stmt)
 
-	result, err := stmnt.Exec(student.FirstName, student.LastName, student.Year)
+	result, err := stmt.Exec(student.FirstName, student.LastName, student.Year)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return &st, errors.New(consts.StudentNotFound)
@@ -147,20 +147,20 @@ func (s *studentRepository) CreateStudent(student *models.Student) (*models.Stud
 func (s *studentRepository) UpdateStudent(student *models.Student) (*models.Student, error) {
 	var st models.Student
 
-	stmnt, err := s.db.Prepare("UPDATE students SET firstname = ?, lastname = ?, year = ? " +
+	stmt, err := s.db.Prepare("UPDATE students SET firstname = ?, lastname = ?, year = ? " +
 		"WHERE id = ?;")
 	if err != nil {
 		log.Error(consts.QueryPrepareError, err)
 		return &st, err
 	}
-	defer func(stmnt *sql.Stmt) {
-		err := stmnt.Close()
+	defer func(stmt *sql.Stmt) {
+		err := stmt.Close()
 		if err != nil {
 			log.Error(consts.DBStatementCloseError, err)
 		}
-	}(stmnt)
+	}(stmt)
 
-	_, err = stmnt.Exec(student.FirstName, student.LastName, student.Year, student.ID)
+	_, err = stmt.Exec(student.FirstName, student.LastName, student.Year, student.ID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return &st, errors.New(consts.StudentNotFound)
@@ -181,20 +181,20 @@ func (s *studentRepository) SearchStudent(searchString string, pagination models
 		"LIMIT %v,%v;", searchString, searchString,
 		sortBy.Column, sortBy.Direction, pagination.Page, pagination.PageSize)
 
-	stmnt, err := s.db.Prepare(query)
+	stmt, err := s.db.Prepare(query)
 
 	if err != nil {
 		log.Error(consts.QueryPrepareError, err)
 		return nil, err
 	}
-	defer func(stmnt *sql.Stmt) {
-		err := stmnt.Close()
+	defer func(stmt *sql.Stmt) {
+		err := stmt.Close()
 		if err != nil {
 			log.Error(consts.DBStatementCloseError, err)
 		}
-	}(stmnt)
+	}(stmt)
 
-	rows, err := stmnt.Query()
+	rows, err := stmt.Query()
 	if err != nil {
 		log.Error(consts.DBResultsError, err)
 		return nil, err
@@ -238,19 +238,19 @@ func (s *studentRepository) SearchStudent(searchString string, pagination models
 func (s *studentRepository) DeleteStudent(id int) (*models.Student, error) {
 	var student models.Student
 
-	stmnt, err := s.db.Prepare("DELETE FROM students WHERE id = ?;")
+	stmt, err := s.db.Prepare("DELETE FROM students WHERE id = ?;")
 	if err != nil {
 		log.Error(consts.QueryPrepareError, err)
 		return &student, err
 	}
-	defer func(stmnt *sql.Stmt) {
-		err := stmnt.Close()
+	defer func(stmt *sql.Stmt) {
+		err := stmt.Close()
 		if err != nil {
 			log.Error(consts.DBStatementCloseError, err)
 		}
-	}(stmnt)
+	}(stmt)
 
-	_, err = stmnt.Exec(id)
+	_, err = stmt.Exec(id)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return &models.Student{}, errors.New(consts.StudentNotFound)
