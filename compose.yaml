@@ -1,0 +1,25 @@
+services:
+  api:
+    build: .
+    container_name: simple_api_app
+    restart: always
+    ports:
+      - '8001:8001'
+    depends_on:
+      mysql:
+        condition: service_started
+    environment:
+      DB_HOST: "mysql"
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+#    ports:
+#      - '3306:3306'
+    volumes:
+      - "db-data:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+
+volumes:
+  db-data:
