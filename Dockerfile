@@ -3,7 +3,7 @@
 ##
 ## Build
 ##
-FROM golang:1.17-alpine3.14 AS build
+FROM golang:1.20-alpine3.16 AS build
 
 WORKDIR /app
 
@@ -12,13 +12,14 @@ COPY go.sum ./
 RUN go mod download
 
 COPY . .
-RUN go build -o simpleAPI .\cmd\app\main.go
+RUN go build -o simpleAPI ./cmd/app
 
 ##
 ## Deploy
 ##
 
-FROM alpine:3.14.0
+FROM alpine:3.16.0
 WORKDIR /
-COPY --from=build /simpleAPI /simpleAPI
+COPY --from=build app/simpleAPI /simpleAPI
+COPY .env .env
 ENTRYPOINT ["/simpleAPI"]
