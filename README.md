@@ -6,6 +6,25 @@ using Go and Mysql
 ### How to run the application
 
 - Clone the repository
+- Navigate to the project directory: `cd simpleAPI`
+- Create an `.env` file in the root directory of the project.
+- Populate the `.env` file with the required environment variables.<br>
+  Here's an example: <br>
+  `PORT=:8080`<br>
+  `DB_HOST={hostname}`<br>
+  `DB_PORT=3306`<br>
+  `DB_USERNAME=admin`<br>
+  `DB_PASSWORD=password`<br>
+  `DB_NAME=simpleapidb`<br>
+  `DB_NETWORK=tcp`
+
+#### Running using Docker
+
+- run `docker compose up`
+- to stop the application run `docker compose down`
+
+#### Running Locally
+
 - run `go build -o {binaryName} .\cmd\app\main.go` to build the binary
 - run `.\{binary name}` to run the binary (eg .\simpleAPI)
 
