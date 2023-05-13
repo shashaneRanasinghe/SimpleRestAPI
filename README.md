@@ -12,10 +12,10 @@ using Go and Mysql
   Here's an example: <br>
   `PORT=:8080`<br>
   `DB_HOST={hostname}`<br>
-  `DB_PORT=3306`<br>
-  `DB_USERNAME=admin`<br>
-  `DB_PASSWORD=password`<br>
-  `DB_NAME=simpleapidb`<br>
+  `DB_PORT={port}`<br>
+  `DB_USERNAME={username}`<br>
+  `DB_PASSWORD={password}`<br>
+  `DB_NAME={simpleapidb}`<br>
   `DB_NETWORK=tcp`
 
 #### Running using Docker
