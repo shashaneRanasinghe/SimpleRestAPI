@@ -35,8 +35,9 @@ func Serve() chan string {
 	studentRouter := router.PathPrefix("/student").Subrouter()
 	st.StudentRoutes(studentRouter)
 
+	lec := lecturer.NewLecturerHandler(conn)
 	lecturerRouter := router.PathPrefix("/lecturer").Subrouter()
-	lecturer.LecturerRoutes(lecturerRouter, conn)
+	lec.LecturerRoutes(lecturerRouter)
 
 	staffRouter := router.PathPrefix("/staff").Subrouter()
 	staff.StaffRoutes(staffRouter, conn)
