@@ -16,3 +16,10 @@ const (
 	StudentDeleted = "Student Deleted Successfully"
 	StudentUpdated = "Student Updated Successfully"
 )
+
+const (
+	GetLecturer     = "Lecturer Queried Successfully"
+	LecturerCreated = "Lecturer Created Successfully"
+	LecturerDeleted = "Lecturer Deleted Successfully"
+	LecturerUpdated = "Lecturer Updated Successfully"
+)
