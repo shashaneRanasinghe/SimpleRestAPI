@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/shashaneRanasinghe/simpleAPI/internal/delivery/http/handlers/lecturer"
 	"github.com/shashaneRanasinghe/simpleAPI/internal/delivery/http/handlers/staff"
 	"github.com/shashaneRanasinghe/simpleAPI/internal/delivery/http/handlers/student"
@@ -41,6 +42,8 @@ func Serve() chan string {
 
 	staffRouter := router.PathPrefix("/staff").Subrouter()
 	staff.StaffRoutes(staffRouter, conn)
+
+	router.Handle("/metrics", promhttp.Handler())
 
 	closeChannel := make(chan string)
 
