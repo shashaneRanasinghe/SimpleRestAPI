@@ -1,16 +1,15 @@
 package consts
 
-//Handler Errors
+// Handler Errors
 const (
 	JSONMarshalError      = "Json Marshalling Error "
-	GetStudentsError      = "Error Getting Students "
 	ResponseWriteError    = "Error Writing Response "
 	RequestBodyReadError  = "Error Reading The Request Body"
 	RequestBodyCloseError = "Error Closing The Request Body"
 	IDError               = "Error Getting The ID"
 )
 
-//DB ERRORS
+// DB ERRORS
 const (
 	QueryPrepareError     = "Error Preparing Query "
 	DBResultsError        = "Error Getting Results From The DB "
@@ -24,4 +23,11 @@ const (
 const (
 	StudentNotFound    = "student Not Found"
 	StudentDeleteError = "Error Deleting Student"
+	GetStudentsError   = "Error Getting Students "
+)
+
+const (
+	LecturerNotFound    = "lecturer Not Found"
+	LecturerDeleteError = "Error Deleting Lecturer"
+	GetLecturersError   = "Error Getting Lecturers "
 )
