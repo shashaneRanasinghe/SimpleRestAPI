@@ -10,7 +10,6 @@ import (
 	"github.com/shashaneRanasinghe/simpleAPI/pkg/consts"
 	"github.com/tryfix/log"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 )
@@ -38,7 +37,7 @@ func (handler *StudentHandler) StudentRoutes(r *mux.Router) {
 
 }
 
-func (handler *StudentHandler) getAllStudents(w http.ResponseWriter, r *http.Request) {
+func (handler *StudentHandler) getAllStudents(w http.ResponseWriter, _ *http.Request) {
 	var respModel models.StudentListResponse
 
 	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
@@ -145,7 +144,7 @@ func (handler *StudentHandler) createStudent(w http.ResponseWriter, r *http.Requ
 
 	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Error(consts.RequestBodyReadError, err)
 
@@ -218,7 +217,7 @@ func (handler *StudentHandler) updateStudent(w http.ResponseWriter, r *http.Requ
 
 	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Error(consts.RequestBodyReadError, err)
 
@@ -351,7 +350,7 @@ func (handler *StudentHandler) searchStudents(w http.ResponseWriter, r *http.Req
 
 	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Error(consts.RequestBodyReadError, err)
 

@@ -10,7 +10,6 @@ import (
 	"github.com/shashaneRanasinghe/simpleAPI/pkg/consts"
 	"github.com/tryfix/log"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 )
@@ -37,7 +36,7 @@ func (handler *LecturerHandler) LecturerRoutes(r *mux.Router) {
 
 }
 
-func (handler *LecturerHandler) getAllLecturers(w http.ResponseWriter, r *http.Request) {
+func (handler *LecturerHandler) getAllLecturers(w http.ResponseWriter, _ *http.Request) {
 	var respModel models.LecturerListResponse
 
 	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
@@ -144,7 +143,7 @@ func (handler *LecturerHandler) createLecturer(w http.ResponseWriter, r *http.Re
 
 	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Error(consts.RequestBodyReadError, err)
 
@@ -217,7 +216,7 @@ func (handler *LecturerHandler) updateLecturer(w http.ResponseWriter, r *http.Re
 
 	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Error(consts.RequestBodyReadError, err)
 
@@ -350,7 +349,7 @@ func (handler *LecturerHandler) searchLecturers(w http.ResponseWriter, r *http.R
 
 	w.Header().Set(consts.ContentType, consts.ApplicationJSON)
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Error(consts.RequestBodyReadError, err)
 
